@@ -17,7 +17,7 @@ This is the official repository of **"FastKV: KV Cache Compression for Fast Long
 
 ## Usage
 ### 1. Installation
-
+Installation with the requirements package.
 ```
 conda create -n fastkv python=3.9
 conda activate fastkv
@@ -31,7 +31,7 @@ make i
 ```
 
 ### 2. Quick Start
-
+Inference with FastKV methods and evaluation for LongBench, Needle-in-a-Haystack, and speedup benchamrk.
 ```
 # Run LongBench Evaluation
 ./scripts/run_longbench.sh
