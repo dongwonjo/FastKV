@@ -15,6 +15,8 @@ This is the official repository of **"FastKV: KV Cache Compression for Fast Long
 * FastKV integrates GQA-aware KV cache compression, further optimizing memory and computation while leveraging grouped-query attention.
 * Experimental results demonstrate that FastKV achieves up to **1.97×** speedup in Time-To-First-Token (TTFT) and **5.07×** higher throughput compared to full-context inference with 128k input tokens, all while preserving long-context accuracy.
 
+For more details please check out our [paper](https://arxiv.org/abs/2502.01068).
+
 ## Usage
 ### 1. Installation
 Installation with the requirements package.
