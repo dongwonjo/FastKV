@@ -1,4 +1,4 @@
-# Mixture of Scales: Memory-Efficient Token-Adaptive Binarization for Large Language Models
+# FastKV: KV Cache Compression for Fast Long-Context Processing with Token-Selective Propagation
 
 <p align="middle">
     <a href="https://arxiv.org/abs/2502.01068"><img src="https://img.shields.io/badge/arXiv-2502.01068-b31b1b.svg" alt="arXiv"/></a>
