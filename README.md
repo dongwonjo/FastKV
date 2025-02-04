@@ -31,7 +31,7 @@ make i
 ```
 
 ### 2. Quick Start
-Inference with FastKV methods and evaluation for LongBench, Needle-in-a-Haystack, and speedup benchamrk.
+Inference with FastKV methods and evaluation for LongBench, Needle-in-a-Haystack, and speedup benchmark.
 ```
 # Run LongBench Evaluation
 ./scripts/run_longbench.sh
