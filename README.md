@@ -68,6 +68,6 @@ If you use the FastKV approach in your research,  please consider citing:
   title={FastKV: KV Cache Compression for Fast Long-Context Processing with Token-Selective Propagation},
   author={Dongwon Jo, Jiwon Song, Yulhwa Kim, Jae-Joon Kim},
   journal={arXiv preprint arXiv:2502.01068},
-  year={2024}
+  year={2025}
   }
 ```
