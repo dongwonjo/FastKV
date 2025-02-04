@@ -5,7 +5,7 @@
 </p>
 
 <div align=center>
-<img width=100% src="./imgs/FastKV.PNG"/>
+<img width=100% src="./images/FastKV.PNG"/>
 </div>
 
 
