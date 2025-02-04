@@ -46,7 +46,7 @@ make i
 ./scripts/run_throughput.sh
 ```
 
-## Support Models
+## Model Support
 
 |         | FastKV | GemFilter | SnapKV | AdaKV | HeadKV |
 |:-------:|:------:|:---------:|:------:|:-----:|:------:|
