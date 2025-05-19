@@ -15,6 +15,10 @@ This is the official repository of **"FastKV: KV Cache Compression for Fast Long
 * This method significantly reduces KV cache size while maintaining accuracy, leading to improved latency and efficiency in long-context processing of LLMs.
 * Experiments results demonstrate that FastKV achieves up to**1.97×** speedup in time-to-first-token (TTFT) and **4.82×** throughput improvement, while maintaining less than 1% accuracy degradation compared to full-context inference on long-context benchmarks
 
+<div align=center>
+<img width=100% src="./images/performance.PNG"/>
+</div>
+
 For more details, please check out our [paper](https://arxiv.org/abs/2502.01068).
 
 ## Usage
