@@ -17,7 +17,7 @@ def check_version():
         transformers_version = version("transformers")
     except Exception as e:
         print(f"Transformers not installed: {e}")
-    version_list = ['4.43']
+    version_list = ['4.45']
     warning_flag = True
     for x in version_list:
         if x in transformers_version:

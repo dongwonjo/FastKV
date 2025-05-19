@@ -3,14 +3,14 @@ import warnings
 import transformers
 
 from transformers.models.llama.modeling_llama import LLAMA_ATTENTION_CLASSES
-from baseline.fastkv.llama_hijack_4_43 import (
+from baseline.fastkv.llama_hijack_4_45 import (
     LlamaFastKVAttention,
     llama_decoderlayer_forward,
     llama_model_forward
 )
 
 from transformers.models.mistral.modeling_mistral import MISTRAL_ATTENTION_CLASSES
-from baseline.fastkv.mistral_hijack_4_43 import (
+from baseline.fastkv.mistral_hijack_4_45 import (
     MistralFastKVAttention,
     mistral_decoderlayer_forward,
     mistral_model_forward
@@ -26,7 +26,7 @@ def check_version():
 
 def replace_llama():
     transformers_version = check_version()
-    version_list = ['4.43']
+    version_list = ['4.45']
     warning_flag = True
     for version in version_list:
         if version in transformers_version:
@@ -42,7 +42,7 @@ def replace_llama():
 
 def replace_mistral():
     transformers_version = check_version()
-    version_list = ['4.43']
+    version_list = ['4.45']
     warning_flag = True
     for version in version_list:
         if version in transformers_version:

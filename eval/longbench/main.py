@@ -168,7 +168,7 @@ def main(args):
 
     # Load Model & Tokenizer
     logging.info(f'Load Model & Tokenizer...')
-    tokenizer = AutoTokenizer.from_pretrained(args.model, device_map='auto', trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(args.model, trust_remote_code=True)
     model = AutoModelForCausalLM.from_pretrained(args.model, device_map='auto', attn_implementation='flash_attention_2', torch_dtype=torch.float16)
     model.eval()
 

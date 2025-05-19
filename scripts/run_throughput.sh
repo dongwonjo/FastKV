@@ -1,7 +1,7 @@
 # This is example for throughput scripts
 # 8192 / 16384 / 32768 / 65536 / 131072
 
-model="meta-llama/Meta-Llama-3.1-8B-Instruct"
+model="nvidia/Llama-3.1-8B-UltraLong-1M-Instruct"
 device=0
 seqlen=131072
 genlen=128

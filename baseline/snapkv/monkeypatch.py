@@ -1,15 +1,15 @@
 from importlib.metadata import version
 import warnings
 import transformers
-from baseline.snapkv.llama_hijack_4_43 import (
+from baseline.snapkv.llama_hijack_4_45 import (
     llama_flash_attn2_forward,
     llama_model_forward
     )
-from baseline.snapkv.mistral_hijack_4_43 import (
+from baseline.snapkv.mistral_hijack_4_45 import (
     mistral_flash_attn2_forward,
     mistral_model_forward
     )
-from baseline.snapkv.phi3_hijack_4_43 import phi3_flash_attn2_forward as phi3_flash_attn2_forward_4_43
+from baseline.snapkv.phi3_hijack_4_45 import phi3_flash_attn2_forward as phi3_flash_attn2_forward_4_43
 
 def check_version():
     try:

@@ -50,6 +50,9 @@ class DynamicCacheSplitHeadFlatten(Cache):
         if len(self.key_cache) <= layer_idx:
             self.key_cache.append(key_states)
             self.value_cache.append(value_states)
+        elif (len(self.key_cache) > layer_idx and self.key_cache[layer_idx] == []):
+            self.key_cache[layer_idx] = key_states
+            self.value_cache[layer_idx] = value_states
         else:
             assert self.key_cache[layer_idx].dim() == 2
             bs, head, seqlen, dim = key_states.shape
@@ -72,12 +75,13 @@ class DynamicCacheSplitHeadFlatten(Cache):
         return self.key_cache[layer_idx], self.value_cache[layer_idx]
 
     def get_seq_length(self, layer_idx: Optional[int] = 0) -> int:
-        if len(self.key_cache) <= layer_idx:
+        """Returns the sequence length of the cached states. A layer index can be optionally passed."""
+        # TODO: deprecate this function in favor of `cache_position`
+        if len(self.key_cache) <= layer_idx or (len(self.key_cache) > layer_idx and self.key_cache[layer_idx] == []):
             return 0
-
         # TODO: return 1 to means has content for now
         return 1
-        # return max(map(lambda states: states.shape[-2], self.key_cache[layer_idx]))
+        # return self.key_cache[layer_idx].shape[-2]
 
     def get_max_length(self) -> Optional[int]:
         return None
@@ -376,7 +380,9 @@ class ReasonSnapKVCluster():
         if head_choice == 'random':
             raise ValueError
         elif head_choice == 'copy':
-            if 'llama-3-8b-instruct' in model.lower():
+            if 'ultralong' in model.lower():
+                path = f'{root_path}/Important_Head/head_score/Llama-3.1-8B-UltraLong-1M-Instruct_retrieval_heads.json'
+            elif 'llama-3-8b-instruct' in model.lower():
                 path = f'{root_path}/Important_Head/head_score/Meta-Llama-3-8B-Instruct_retrieval_heads.json'
             elif 'llama-3.1-8b-instruct' in model.lower():
                 path = f'{root_path}/Important_Head/head_score/Meta-Llama-3.1-8B-Instruct_retrieval_heads.json'
@@ -391,7 +397,9 @@ class ReasonSnapKVCluster():
             else:
                 raise ValueError
         elif head_choice == 'reason':
-            if 'llama-3-8b-instruct' in model.lower():
+            if 'ultralong' in model.lower():
+                path = f'{root_path}/Important_Head/head_score/Llama-3.1-8B-UltraLong-1M-Instruct_retrieval_reasoning_heads.json'
+            elif 'llama-3-8b-instruct' in model.lower():
                 path = f'{root_path}/Important_Head/head_score/Meta-Llama-3-8B-Instruct_retrieval_reasoning_heads.json'
             elif 'llama-3.1-8b-instruct' in model.lower():
                 path = f'{root_path}/Important_Head/head_score/Meta-Llama-3.1-8B-Instruct_retrieval_reasoning_heads.json'

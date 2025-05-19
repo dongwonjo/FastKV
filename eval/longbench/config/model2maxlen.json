@@ -8,5 +8,6 @@
     "mistralai/Mistral-Nemo-Instruct-2407": 127500,
     "mistralai/Ministral-8B-Instruct-2410": 127500,
     "mistralai/Mistral-7B-Instruct-v0.3": 31500,
-    "microsoft/Phi-3.5-mini-instruct": 127500
+    "microsoft/Phi-3.5-mini-instruct": 127500,
+    "nvidia/Llama-3.1-8B-UltraLong-1M-Instruct": 1072652
 }

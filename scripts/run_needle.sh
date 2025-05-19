@@ -1,14 +1,15 @@
 # This is example for Needle-in-a-Haystack script.
 
 # Model List
+# nvidia/Llama-3.1-8B-UltraLong-1M-Instruct
 # meta-llama/Meta-Llama-3.1-8B-Instruct
 # meta-llama/Llama-3.2-3B-Instruct
 # mistralai/Mistral-Nemo-Instruct-2407
 
 # Config
-model="meta-llama/Meta-Llama-3.1-8B-Instruct"
+model="nvidia/Llama-3.1-8B-UltraLong-1M-Instruct"
 device=0
-max_prompt=512
+max_prompt=2048
 
 # FastKV
 path="fastkv-$max_prompt"

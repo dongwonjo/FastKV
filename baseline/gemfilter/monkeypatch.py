@@ -1,9 +1,9 @@
 from importlib.metadata import version
 import warnings
 import transformers
-from baseline.gemfilter.llama_hijack_4_43 import LlamaSelectAttention, llama_model_forward
+from baseline.gemfilter.llama_hijack_4_45 import LlamaSelectAttention, llama_model_forward
 from transformers.models.llama.modeling_llama import LLAMA_ATTENTION_CLASSES
-from baseline.gemfilter.mistral_hijack_4_43 import MistralSelectAttention, mistral_model_forward
+from baseline.gemfilter.mistral_hijack_4_45 import MistralSelectAttention, mistral_model_forward
 from transformers.models.mistral.modeling_mistral import MISTRAL_ATTENTION_CLASSES
 
 def check_version():
@@ -16,7 +16,7 @@ def check_version():
 
 def replace_llama():
     transformers_version = check_version()
-    version_list = ['4.43']
+    version_list = ['4.45']
     warning_flag = True
     for version in version_list:
         if version in transformers_version:
@@ -31,7 +31,7 @@ def replace_llama():
 
 def replace_mistral():
     transformers_version = check_version()
-    version_list = ['4.43']
+    version_list = ['4.45']
     warning_flag = True
     for version in version_list:
         if version in transformers_version:
