@@ -10,7 +10,7 @@
 # mistralai/Mistral-Nemo-Instruct-2407
 
 # Config
-dataset_list="narrativeqa qasper multifieldqa_en hotpotqa 2wikimqa musique gov_report qmsum multi_news trec triviaqa samsum passage_count passage_retrieval_en lcc repobench-p"
+dataset_list="qasper"
 model="nvidia/Llama-3.1-8B-UltraLong-1M-Instruct"
 device=0
 max_prompt=2048
@@ -29,7 +29,7 @@ do
     --kernel_size 7 \
     --window_size 8 \
     --tsp_idx 15 \
-    --tsp_len 2048 \
+    --tsp_len 2048
     CUDA_VISIBLE_DEVICES=$device python -m eval.longbench.evaluate \
     --model $model \
     --eval_path $path
