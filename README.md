@@ -5,15 +5,14 @@
 </p>
 
 <div align=center>
-<img width=80% src="./images/overview.PNG"/>
+<img width=80% src="./images/FastKV.PNG"/>
 </div>
 
 This is the official repository of **"FastKV: KV Cache Compression for Fast Long-Context Processing with Token-Selective Propagation"**.
 
 * FastKV introduces a novel Token-Selective Propagation (TSP) approach, selectively propagating only critical tokens to layer layers while retaining full-context information in early layers.
 * This method significantly reduces KV cache size while maintaining accuracy, leading to improved latency and efficiency in long-context processing of LLMs.
-* FastKV integrates GQA-aware KV cache compression, further optimizing memory and computation while leveraging grouped-query attention.
-* Experimental results demonstrate that FastKV achieves up to **1.97×** speedup in Time-To-First-Token (TTFT) and **5.07×** higher throughput compared to full-context inference with 128k input tokens, all while preserving long-context accuracy.
+* Experiments results demonstrate that FastKV achieves up to**1.97×** speedup in time-to-first-token (TTFT) and **4.82×** throughput improvement, while maintaining less than 1% accuracy degradation compared to full-context inference on long-context benchmarks
 
 For more details, please check out our [paper](https://arxiv.org/abs/2502.01068).
 
