@@ -5,8 +5,9 @@
 </p>
 
 <div align=center>
-<img width=80% src="./images/FastKV.PNG"/>
+<img width=90% src="./images/FastKV.PNG"/>
 </div>
+</br>
 
 This is the official repository of **"FastKV: KV Cache Compression for Fast Long-Context Processing with Token-Selective Propagation"**.
 
