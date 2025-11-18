@@ -15,10 +15,6 @@ This is the official repository of **"FastKV: KV Cache Compression for Fast Long
 * This method significantly reduces KV cache size while maintaining accuracy, leading to improved latency and efficiency in long-context processing of LLMs.
 * Experiments results demonstrate that FastKV achieves up to **1.97×** speedup in time-to-first-token (TTFT) and **4.82×** throughput improvement, while maintaining less than 1% accuracy degradation compared to full-context inference on long-context benchmarks
 
-<div align=center>
-<img width=100% src="./images/performance.PNG"/>
-</div>
-
 For more details, please check out our [paper](https://arxiv.org/abs/2502.01068).
 
 ## Usage
@@ -31,38 +27,36 @@ cd FastKV
 pip install -r requirements.txt
 pip install flash-attn==2.6.3
 
-# For AdaKV and HeadKV
-cd baseline/adakv
-make i
-```
-
 ### 2. Quick Start
-Inference with FastKV methods and evaluation for LongBench, Needle-in-a-Haystack, and speedup benchmark.
+Inference with FastKV methods and evaluation for LongBench, Ruler, Needle-in-a-Haystack, and speedup benchmark.
 ```
 # Run LongBench Evaluation
-./scripts/run_longbench.sh
+./scripts/eval_longbench.sh
+
+# Run RULER Evaluation
+./scripts/eval_ruler.sh
 
 # Run Needle-in-a-Haystack Evaluation
-./scripts/run_needle.sh
+./scripts/eval_needle.sh
 
-# Run TTFT Benchmark
-./scripts/run_ttft.sh
+# Run E2E Latency Benchmark
+./scripts/eval_e2e.sh
 
-# Run Throughput Benchmark
-./scripts/run_throughput.sh
+# Run Prefill Latency Benchmark
+./scripts/eval_prefill.sh
 ```
 
 ## Model Support
 
-|         | FastKV | GemFilter | SnapKV | AdaKV | HeadKV |
-|:-------:|:------:|:---------:|:------:|:-----:|:------:|
-|  LLaMA  |    O   |     O     |    O   |   O   |    O   |
-| Mistral |    O   |     O     |    O   |   O   |    O   |
+|         | FastKV | GemFilter | SnapKV | StreamingLLM | H2O | PyramidInfer |
+|:-------:|:------:|:---------:|:------:|:-----:|:------:|:------:|
+|  LLaMA  |    O   |     O     |    O   |   O   |    O   |    O   |
+| Ministral |    O   |     O     |    O   |   O   |    O   |    O   |
 
 ## Acknowledgements
-Our implementation of FastKV is based on codes from [SnapKV](https://github.com/FasterDecoding/SnapKV) repository.
+Our implementation of FastKV is based on codes from [SnapKV](https://github.com/FasterDecoding/SnapKV) and [KVCache-Factory](https://github.com/Zefan-Cai/KVCache-Factory) repository.
 
-We have integrated the baseline methods ([SnapKV](https://github.com/FasterDecoding/SnapKV), [AdaKV](https://github.com/FFY0/AdaKV), [HeadKV](https://github.com/FYYFU/HeadKV), [GemFilter](https://github.com/SalesforceAIResearch/GemFilter)) for experiments and evaluations, thanks to their open-source contributions.
+We have integrated the baseline methods (([SnapKV](https://github.com/FasterDecoding/SnapKV), [PyramidInfer] (https://github.com/mutonix/pyramidinfer), [StreamingLLM](https://github.com/mit-han-lab/streaming-llm), [H2O](https://github.com/FMInference/H2O), [GemFilter](https://github.com/SalesforceAIResearch/GemFilter))) for experiments and evaluations, thanks to their open-source contributions.
 
 ## Citation
 If you use the FastKV approach in your research,  please consider citing:

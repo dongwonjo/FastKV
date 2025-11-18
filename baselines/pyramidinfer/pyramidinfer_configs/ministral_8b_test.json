@@ -1,0 +1,19 @@
+{
+    "model": "ministral",
+    "size": "8B",
+    "prefill_stage": {
+        "recent_ratio": 0.01,
+        "prefill_decay_ratio": 0.7,
+        "prefill_decay_strategy": "cosine",
+        "min_context_length": 64,
+        "layerwise_downsample_interval": 1,
+        "streamingllm_sink_len": 4,
+        "distance_weight": 1.2
+    },
+    "generation_stage": {
+        "gen_decay_ratio": 1.0,
+        "gen_decay_strategy": "cosine",
+        "gen_compress_ratio": 0.9,
+        "exceed_length_to_compress": 16
+    }
+}
