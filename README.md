@@ -1,4 +1,4 @@
-# FastKV: KV Cache Compression for Fast Long-Context Processing with Token-Selective Propagation
+# FastKV: Decoupling of Context Reduction and KV Cache Compression for Prefill-Decoding Acceleration
 
 <p align="middle">
     <a href="https://arxiv.org/abs/2502.01068"><img src="https://img.shields.io/badge/arXiv-2502.01068-b31b1b.svg" alt="arXiv"/></a>
@@ -9,11 +9,11 @@
 </div>
 </br>
 
-This is the official repository of **"FastKV: KV Cache Compression for Fast Long-Context Processing with Token-Selective Propagation"**.
+This is the official repository of **"FastKV: Decoupling of Context Reduction and KV Cache Compression for Prefill-Decoding Acceleration"**.
 
 * FastKV introduces a novel Token-Selective Propagation (TSP) approach, selectively propagating only critical tokens to layer layers while retaining full-context information in early layers.
 * This method significantly reduces KV cache size while maintaining accuracy, leading to improved latency and efficiency in long-context processing of LLMs.
-* Experiments results demonstrate that FastKV achieves up to **1.97×** speedup in time-to-first-token (TTFT) and **4.82×** throughput improvement, while maintaining less than 1% accuracy degradation compared to full-context inference on long-context benchmarks
+* Experiments results demonstrate that FastKV achieves up to **1.82×** speedup in time-to-first-token (TTFT) and **2.87×** throughput improvement, while maintaining less than 1% accuracy degradation compared to full-context inference on long-context benchmarks
 
 For more details, please check out our [paper](https://arxiv.org/abs/2502.01068).
 
@@ -31,18 +31,26 @@ pip install flash-attn==2.6.3
 Inference with FastKV methods and evaluation for LongBench, Ruler, Needle-in-a-Haystack, and speedup benchmark.
 ```
 # Run LongBench Evaluation
+```
 ./scripts/eval_longbench.sh
+```
 
 # Run RULER Evaluation
+```
 ./scripts/eval_ruler.sh
-
+```
 # Run Needle-in-a-Haystack Evaluation
+```
 ./scripts/eval_needle.sh
+```
 
 # Run E2E Latency Benchmark
+```
 ./scripts/eval_e2e.sh
+```
 
 # Run Prefill Latency Benchmark
+```
 ./scripts/eval_prefill.sh
 ```
 
