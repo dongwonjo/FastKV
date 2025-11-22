@@ -321,7 +321,7 @@ class MistralFlashAttention2(MistralAttention):
                 "make sure to use `sdpa` in the mean time, and open an issue at https://github.com/huggingface/transformers"
             )
 
-        output_attentions = False
+        #output_attentions = False
 
         bsz, q_len, _ = hidden_states.size()
 
@@ -373,6 +373,21 @@ class MistralFlashAttention2(MistralAttention):
         key_states = repeat_kv(key_states, self.num_key_value_groups)
         value_states = repeat_kv(value_states, self.num_key_value_groups)
         dropout_rate = 0.0 if not self.training else self.attention_dropout
+
+        if q_len > 1:
+
+            recent_length = int(q_len * self.config.recent_ratio)
+
+            attn_weights = torch.matmul(query_states[..., -recent_length:, :], key_states.transpose(2, 3)) / math.sqrt(head_dim)
+            mask = torch.full((recent_length, recent_length), torch.finfo(attn_weights.dtype).min, device=attn_weights.device)
+            mask_cond = torch.arange(mask.size(-1), device=attn_weights.device)
+            mask.masked_fill_(mask_cond < (mask_cond + 1).view(mask.size(-1), 1), 0)
+            mask = mask.to(attn_weights.device)
+            attention_mask = mask[None, None, :, :]
+
+            attn_weights[:, :, -recent_length:, -recent_length:] += attention_mask
+
+            attn_weights = nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(query_states.dtype)
 
         # In PEFT, usually we cast the layer norms in float32 for training stability reasons
         # therefore the input hidden states gets silently casted in float32. Hence, we need

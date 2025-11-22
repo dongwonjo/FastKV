@@ -452,7 +452,7 @@ class LlamaFlashAttention2(LlamaAttention):
                 "make sure to use `sdpa` in the mean time, and open an issue at https://github.com/huggingface/transformers"
             )
 
-        output_attentions = False
+        # output_attentions = False
 
         bsz, q_len, _ = hidden_states.size()
 
@@ -484,6 +484,22 @@ class LlamaFlashAttention2(LlamaAttention):
             # sin and cos are specific to RoPE models; cache_position needed for the static cache
             cache_kwargs = {"sin": sin, "cos": cos, "cache_position": cache_position}
             key_states, value_states = past_key_value.update(key_states, value_states, self.layer_idx, cache_kwargs)
+
+        if q_len > 1:
+
+            recent_length = int(q_len * self.config.recent_ratio)
+
+            key_states_temp = repeat_kv(key_states, num_key_value_groups)
+            attn_weights = torch.matmul(query_states[..., -recent_length:, :], key_states_temp.transpose(2, 3)) / math.sqrt(head_dim)
+            mask = torch.full((recent_length, recent_length), torch.finfo(attn_weights.dtype).min, device=attn_weights.device)
+            mask_cond = torch.arange(mask.size(-1), device=attn_weights.device)
+            mask.masked_fill_(mask_cond < (mask_cond + 1).view(mask.size(-1), 1), 0)
+            mask = mask.to(attn_weights.device)
+            attention_mask = mask[None, None, :, :]
+
+            attn_weights[:, :, -recent_length:, -recent_length:] += attention_mask
+
+            attn_weights = nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(query_states.dtype)
 
         # TODO: These transpose are quite inefficient but Flash Attention requires the layout [batch_size, sequence_length, num_heads, head_dim]. We would need to refactor the KV cache
         # to be able to avoid many of these transpose/reshape/view.

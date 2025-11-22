@@ -177,3 +177,20 @@ if __name__ == '__main__':
     with open(os.path.join(args.results_dir, f"results.csv"), 'w') as fp:
         writer = csv.writer(fp)
         writer.writerows(results_list)
+
+    # Print Excel-friendly CSV summary at the end for easy paste
+    print("\nExcel-friendly summary (CSV):")
+    header = ["method"] + dataset_list
+    print(",".join(header))
+    for idx, method in enumerate(["fullkv", "streamingllm", "h2o", "snapkv", "pyramidinfer", "gemfilter", "fastkv"]):
+        # results_list[idx+1] is the row for this method; skip the first cell (method name)
+        values = []
+        for val in results_list[idx+1][1:]:
+            if isinstance(val, (int, float, np.floating)):
+                values.append(f"{float(val):.2f}")
+            else:
+                try:
+                    values.append(f"{float(val):.2f}")
+                except:
+                    values.append(str(val))
+        print(",".join([method] + values))

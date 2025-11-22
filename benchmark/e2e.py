@@ -3,6 +3,7 @@ import json
 import random
 import argparse
 import logging
+import time
 
 import numpy as np
 from tqdm import tqdm
@@ -244,6 +245,12 @@ def main(model, args):
     mean_latency = sum(latency_list) / len(latency_list) if latency_list else 0
     mean_throughput = sum(throughput_list) / len(throughput_list) if throughput_list else 0
 
+    n_runs = len(latency_list)
+    latency_std = np.std(latency_list, ddof=1 if n_runs > 1 else 0) if n_runs > 0 else 0.0
+    throughput_std = np.std(throughput_list, ddof=1 if n_runs > 1 else 0) if n_runs > 0 else 0.0
+    latency_ci95 = 1.96 * latency_std / np.sqrt(n_runs) if n_runs > 0 else 0.0
+    throughput_ci95 = 1.96 * throughput_std / np.sqrt(n_runs) if n_runs > 0 else 0.0
+
     print(f"\nMethod: {args.method}")
     print(f"Context Length = {args.context_length}")
     if args.method == "fastkv":
@@ -253,7 +260,44 @@ def main(model, args):
     print(f"Generation Length = {generation_length}")
     print(f"Avg E2E Latency = {(mean_latency):.2f} seconds")
     print(f"Throughput: {(mean_throughput):.2f} tokens/sec")
+    print(f"Runs = {n_runs}")
+    print(f"95% CI ±{latency_ci95:.4f} seconds | Latency Std = {latency_std:.4f} seconds")
+    print(f"95% CI ±{throughput_ci95:.4f} tokens/sec | Throughput Std = {throughput_std:.4f} tokens/sec")
     print(f"Max memory allocated: {torch.cuda.max_memory_allocated() / 1000**2 / 1000:.2f} GB\n")
+
+    # Save summarized results to txt
+    if getattr(args, "save_txt", True):
+        try:
+            os.makedirs(args.save_dir, exist_ok=True)
+            if not hasattr(args, "save_path") or args.save_path is None:
+                extra = ""
+                if args.method == "gemfilter":
+                    extra = f"_f{args.filter_idx}"
+                filename = f"{args.method}_e2e_gen{args.genlen}{extra}_{args.model_path.replace('/', '_')}.txt"
+                args.save_path = os.path.join(args.save_dir, filename)
+
+            is_new = not os.path.exists(args.save_path)
+            with open(args.save_path, "a", encoding="utf-8") as f:
+                if is_new:
+                    f.write(f"# E2E Benchmark Summary\n")
+                    f.write(f"# Model: {args.model_path}\n")
+                    f.write(f"# Method: {args.method} | Genlen: {args.genlen} | Runs: {n_runs}\n")
+                    if args.method == "fastkv":
+                        f.write(f"# TSP Rate: {args.tsp_rate} | Retention Rate: {args.retain_rate} | Eviction: {args.eviction_mode}\n")
+                    elif args.method != "fullkv":
+                        f.write(f"# Retention Rate: {args.retain_rate} | Eviction: {args.eviction_mode}\n")
+                    f.write(f"# Started: {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+
+                f.write(
+                    (
+                        f"Context={args.context_length} | GenLen={generation_length} | "
+                        f"AvgLatency={mean_latency:.4f}s | 95%CI±{latency_ci95:.4f}s | Std={latency_std:.4f}s | "
+                        f"AvgThroughput={mean_throughput:.4f} tok/s | 95%CI±{throughput_ci95:.4f} tok/s | Std={throughput_std:.4f} tok/s | "
+                        f"MaxMem={torch.cuda.max_memory_allocated() / 1000**2 / 1000:.2f} GB\n"
+                    )
+                )
+        except Exception as e:
+            logging.warning(f"Failed to save summary txt: {e}")
         
 
 if __name__ == "__main__":
@@ -294,6 +338,9 @@ if __name__ == "__main__":
 
     # PyramidInfer
     parser.add_argument("--pyramidinfer_config", type=str, default="")
+    # Save results
+    parser.add_argument("--save_txt", type=bool, default=True, help="save summarized results as txt")
+    parser.add_argument("--save_dir", type=str, default="outputs/benchmark", help="directory to save txt results")
 
     args = parser.parse_args()
     set_seed(args.seed)
@@ -326,6 +373,9 @@ if __name__ == "__main__":
         tokenizer.pad_token_id = tokenizer.eos_token_id
         
     context_lengths = [8192, 32768, 131072]
+    # Limit H2O to 8192 context length as requested
+    if args.method == "h2o":
+        context_lengths = [8192]
     
     for context_length in context_lengths:
         args.context_length = context_length
