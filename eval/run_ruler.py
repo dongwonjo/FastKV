@@ -37,7 +37,7 @@ model2maxlen = {
     "llama-2": 3950,
     "llama3": 7950,
     "llama-3": 7950,
-    "mistral": 31500,
+    "mistral": 127500,
     "ministral": 127500,
     "llama-3.1": 127500
 }
