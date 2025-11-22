@@ -301,8 +301,6 @@ if __name__ == "__main__":
     replace_llama(args.method)
     replace_mistral(args.method)
     
-    if args.method == "pyramidinfer":
-        args.attn_implementation = "eager"
 
     tokenizer = AutoTokenizer.from_pretrained(
         args.model_path,

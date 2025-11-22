@@ -169,7 +169,7 @@ def set_model(model, args):
                     assert pyramidinfer_config["prefill_stage"]["recent_ratio"] == 0.2
                 else:
                     raise NotImplementedError(f"No config found for retain_rate={args.retain_rate}")
-            elif "mistral" in args.model_path.lower() or "ministral" in args.model_path.lower():
+            elif "ministral" in args.model_path.lower():
                 if args.retain_rate == 0.35:
                     args.pyramidinfer_config = "baselines/pyramidinfer/pyramidinfer_configs/ministral_8b_35%.json"
                     pyramidinfer_config = json.load(open(args.pyramidinfer_config))
@@ -182,6 +182,12 @@ def set_model(model, args):
                     assert pyramidinfer_config["prefill_stage"]["recent_ratio"] == 0.2
                 else:
                     raise NotImplementedError(f"No config found for retain_rate={args.retain_rate}")
+            elif "nemo" in args.model_path.lower():
+                if args.retain_rate == 0.6:
+                    args.pyramidinfer_config = "baselines/pyramidinfer/pyramidinfer_configs/nemo_12b_60%.json"
+                    pyramidinfer_config = json.load(open(args.pyramidinfer_config))
+                    assert pyramidinfer_config["prefill_stage"]["prefill_decay_ratio"] == 0.78
+                    assert pyramidinfer_config["prefill_stage"]["recent_ratio"] == 0.2
 
             from baselines.pyramidinfer.utils import load_pyramid_config
             model = load_pyramid_config(model, pyramidinfer_config)
