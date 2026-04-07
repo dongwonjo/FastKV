@@ -1,4 +1,4 @@
-# FastKV: Decoupling of Context Reduction and KV Cache Compression for Prefill-Decoding Acceleration
+# [ACL 2026 Findings] FastKV: Decoupling of Context Reduction and KV Cache Compression for Prefill-Decoding Acceleration
 
 <p align="middle">
     <a href="https://arxiv.org/abs/2502.01068"><img src="https://img.shields.io/badge/arXiv-2502.01068-b31b1b.svg" alt="arXiv"/></a>
